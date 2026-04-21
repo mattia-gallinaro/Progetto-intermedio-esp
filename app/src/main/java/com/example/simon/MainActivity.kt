@@ -70,11 +70,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
         else currentSeq += ", $color"
     }
 
-    val convertListToString : (history : List<String>) -> String = {
-        var sequenceHistory : String = ""
-        if(history.size != 0){
-            for(i in 0..(history.size - 2))sequenceHistory = sequenceHistory + history[i] + ";"
-            sequenceHistory += history[history.size - 1]
+    val convertListToString : (historySeq : List<String>) -> String = { historySeq ->
+        var sequenceHistory = ""
+        if(historySeq.size != 0){
+            for(i in 0..(historySeq.size - 2))sequenceHistory = sequenceHistory + historySeq[i] + ";"
+            sequenceHistory += historySeq[history.size - 1]
         }
         sequenceHistory
     }

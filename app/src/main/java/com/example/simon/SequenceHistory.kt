@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,8 +25,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
+
+val convertSequenceToList : (seq : String) -> List<String> = { seq ->
+    val seqPolished = seq.replace(" ", "")
+    seqPolished.split(",")
+}
 
 class SequenceHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +66,6 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -72,7 +81,7 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
         if(history[0] != ""){
             LazyColumn() {
                 items(history.size){
-                        i -> Text(text = history[i])
+                        i -> SingleSequence(history[i])
                 }
             }
         }else{
@@ -94,8 +103,24 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
 @Composable
 fun SingleSequence(sequence : String){
 
-    Box(modifier = Modifier){
+    val buttonsSequence = convertSequenceToList(sequence)
 
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(90.dp)
+        .border(
+            1.dp,
+            SolidColor(Color.White),
+            shape = RoundedCornerShape(4.dp)
+        )
+    ){
+        Text(
+            text = buttonsSequence.size.toString(),
+            modifier = Modifier
+        )
+        Text(
+            text = buttonsSequence.toString()
+        )
     }
 }
 
