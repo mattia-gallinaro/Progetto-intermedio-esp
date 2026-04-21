@@ -68,8 +68,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val orientation = LocalConfiguration.current.orientation
 
     val onColorButtonClick : (String) -> Unit= {color ->
-        if(currentSeq.compareTo("") == 0) currentSeq = "$color, "
-        else currentSeq = currentSeq + ""
+        if(currentSeq.compareTo("") == 0) currentSeq = color
+        else currentSeq += ", $color"
     }
 
     if(orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -151,48 +151,46 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }
 }
 
-//per definire una classe automatica
+//per definire una classe che genera in automatico getter e setter e mi permette di avere
 data class ColorButton(val color : Color, val name : String)
 
 @Composable
 fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
 
-    //arraylist che contiene colore + stringa che rappresenta la prima lettera del colore in inglese
+    //Lista di coppie di colore + prima lettera del colore
 
-    val colorList: ArrayList<ColorButton> = ArrayList<ColorButton>()
-    colorList.add(ColorButton(Color.Red, "R"))
-    colorList.add(ColorButton(Color.Blue, "B"))
-    colorList.add(ColorButton(Color.Green, "G"))
-    colorList.add(ColorButton(Color.Cyan, "C"))
-    colorList.add(ColorButton(Color.Yellow, "Y"))
-    colorList.add(ColorButton(Color.Magenta, "M"))
+    val colorList = listOf<ColorButton>(ColorButton(Color.Red, "R"),
+        ColorButton(Color.Blue, "B"),
+        ColorButton(Color.Green, "G"),
+        ColorButton(Color.Cyan, "C"),
+        ColorButton(Color.Yellow, "Y"),
+        ColorButton(Color.Magenta, "M")).shuffled()
 
-    colorList.shuffle()//mescolo i colori in modo che così i colori dei bottoni a schermo vengono cambiati e non rimangono in una posizione fissa
-
-    var i = 0;
 
         Column(modifier = Modifier
             .fillMaxSize()
         ) {
-            repeat(3) {
+            repeat(3) { row ->
                 Row(
                     modifier = Modifier
                         .weight(1f)//affinchè le 3 righe abbiano lo stesso spazio
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    repeat(2) {
+                    repeat(2) { col ->
+
+                        val index = row * 2 + col
 
                         Button(
                             modifier = Modifier
                                 .weight(1f)//in modo che i bottoni possano occupare metà riga
                                 .fillMaxHeight()
                                 .padding(10.dp),
-                            onClick = { onColorButtonClick(colorList[i].name) },
-                            colors = ButtonDefaults.buttonColors(containerColor = colorList[i].color)
+                            onClick = { onColorButtonClick(colorList[index].name) },
+                            colors = ButtonDefaults.buttonColors(containerColor = colorList[index].color)
+
                         ) {}
 
-                        i++;
                     }
                 }
             }
