@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Simon</string>
+    <string name="title_activity_sequence_history">SequenceHistory</string>
+    <string name="end_game">End Game</string>
+    <string name="end_sequence"></string>
+    <string name="history">List of sequences</string>
+    <string name="emptyHistory">No sequences have been found</string>
+</resources>
