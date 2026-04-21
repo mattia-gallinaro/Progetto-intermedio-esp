@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.Alignment
 
 class SequenceHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +31,8 @@ class SequenceHistory : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val seqHistory : String?  = intent.extras?.getString("")
+        val seqHistory : String?  = intent.extras?.getString("History")
+
 
 
         setContent {
@@ -53,7 +56,9 @@ fun ShowHistory(name: String, modifier: Modifier = Modifier , sequences : String
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.history)
@@ -68,7 +73,7 @@ fun ShowHistory(name: String, modifier: Modifier = Modifier , sequences : String
         if(history[0] != ""){
             LazyColumn() {
                 items(history.size){
-                        i -> history[i]
+                        i -> Text(text = history[i])
                 }
             }
         }else{

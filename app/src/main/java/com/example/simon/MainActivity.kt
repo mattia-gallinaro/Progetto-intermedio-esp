@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,19 +61,25 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     //per salvare e gestire la sequenza attuale e quella dello storico
     var currentSeq by rememberSaveable { mutableStateOf("") }
-    var history by rememberSaveable { mutableStateOf(ArrayList<String>()) }
+    var history by rememberSaveable { mutableStateOf(listOf<String>()) }
 
     val context = LocalContext.current
-
-    //per sapere l'orientamento dello schermo attuale
-    val orientation = LocalConfiguration.current.orientation
 
     val onColorButtonClick : (String) -> Unit= {color ->
         if(currentSeq.compareTo("") == 0) currentSeq = color
         else currentSeq += ", $color"
     }
 
-    if(orientation == Configuration.ORIENTATION_PORTRAIT){
+    val convertListToString : (history : List<String>) -> String = {
+        var sequenceHistory : String = ""
+        if(history.size != 0){
+            for(i in 0..(history.size - 2))sequenceHistory = sequenceHistory + history[i] + ";"
+            sequenceHistory += history[history.size - 1]
+        }
+        sequenceHistory
+    }
+
+    if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT){
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -91,8 +98,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
-                    .verticalScroll(rememberScrollState())
-                    .weight(1f)
+                    .weight(0.5f)
+                    .verticalScroll(rememberScrollState()),
+                fontSize = 30.sp
             )
 
             Row(modifier = Modifier
@@ -108,11 +116,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     ,
                     onClick = {
 
-                        history.add(currentSeq)
+                        if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
+
+                        var historySequence : String? = if(history.size > 0)convertListToString(history) else null
                         currentSeq = ""
 
                         //funziona ma si può spostare in classActivity per avere meno problemi prob
-                        context.startActivity(Intent(context, SequenceHistory::class.java))
+                        context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
                     }
                 ){
                     Text(stringResource(R.string.end_game))
@@ -137,15 +147,48 @@ fun MainScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(Color.DarkGray)
         ){
-            ButtonGrid(onColorButtonClick)
             Column(modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .fillMaxWidth()
             ) {
-                Text(
-                    text =  "Test "
-                )
+                ButtonGrid(onColorButtonClick)
+            }
+            Column(modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+            ) {
+                Button(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(80.dp)
+                        .weight(1f)
+                    ,
+                    onClick = {
+
+                        if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
+
+                        var historySequence : String? = if(history.size > 0)convertListToString(history) else null
+                        currentSeq = ""
+
+                        //funziona ma si può spostare in classActivity per avere meno problemi prob
+                        context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
+                    }
+                ){
+                    Text(stringResource(R.string.end_game))
+                }
+
+                Button(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(80.dp)
+                        .weight(1f)
+                    ,
+                    onClick = {
+                        currentSeq = ""
+                    }
+                ){
+                    Text("Cancella")
+                }
             }
         }
     }
