@@ -118,10 +118,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
                         if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
-                        var historySequence : String? = if(history.size > 0)convertListToString(history) else null
+                        val historySequence : String? = if(history.size > 0)convertListToString(history) else null
                         currentSeq = ""
 
-                        //funziona ma si può spostare in classActivity per avere meno problemi prob
+
                         context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
                     }
                 ){
@@ -178,10 +178,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
                             if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
-                            var historySequence : String? = if(history.size > 0)convertListToString(history) else null
+                            val historySequence : String? = if(history.size > 0)convertListToString(history) else null
                             currentSeq = ""
 
-                            //funziona ma si può spostare in classActivity per avere meno problemi prob
                             context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
                         }
                     ){

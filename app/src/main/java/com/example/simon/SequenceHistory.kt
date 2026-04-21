@@ -23,7 +23,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.sp
 
 class SequenceHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,13 +35,10 @@ class SequenceHistory : ComponentActivity() {
 
         val seqHistory : String?  = intent.extras?.getString("History")
 
-
-
         setContent {
             SimonTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ShowHistory(
-                        name = "Android",
                         modifier = Modifier.padding(innerPadding),
                         seqHistory ?: ""
                     )
@@ -50,7 +49,7 @@ class SequenceHistory : ComponentActivity() {
 }
 
 @Composable
-fun ShowHistory(name: String, modifier: Modifier = Modifier , sequences : String) {
+fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
 
     val history = sequences.split(";")
 
@@ -77,20 +76,25 @@ fun ShowHistory(name: String, modifier: Modifier = Modifier , sequences : String
                 }
             }
         }else{
-            Text(
-                text = stringResource(R.string.emptyHistory)
-            )
+            Column(modifier = Modifier
+                .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = stringResource(R.string.emptyHistory),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    fontSize = 30.sp
+                )
+            }
         }
-
     }
 }
 
 @Composable
-fun SingleSequenceRow(sequence : String){
+fun SingleSequence(sequence : String){
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-    ){
+    Box(modifier = Modifier){
 
     }
 }
@@ -99,7 +103,7 @@ fun SingleSequenceRow(sequence : String){
 @Composable
 fun GreetingPreview2() {
     SimonTheme {
-        ShowHistory("Android", sequences = "")
+        ShowHistory(sequences = "")
     }
 }
 
