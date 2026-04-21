@@ -98,7 +98,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
-                    .weight(0.5f)
+                    .weight(1f)
                     .verticalScroll(rememberScrollState()),
                 fontSize = 30.sp
             )
@@ -138,7 +138,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         currentSeq = ""
                     }
                 ){
-                    Text("Cancella")
+                    Text(stringResource(R.string.end_sequence))
                 }
             }
         }
@@ -147,7 +147,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(Color.DarkGray)
         ){
-            Column(modifier = Modifier
+            Box(modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
             ) {
@@ -157,37 +157,49 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 .weight(1f)
                 .fillMaxHeight()
             ) {
-                Button(
+
+                Text(
+                    text = currentSeq,
                     modifier = Modifier
-                        .height(40.dp)
-                        .width(80.dp)
-                        .weight(1f)
-                    ,
-                    onClick = {
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .verticalScroll(rememberScrollState()),
+                    fontSize = 30.sp
+                )
 
-                        if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
+                Row() {
+                    Button(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .width(80.dp)
+                            .weight(1f)
+                        ,
+                        onClick = {
 
-                        var historySequence : String? = if(history.size > 0)convertListToString(history) else null
-                        currentSeq = ""
+                            if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
-                        //funziona ma si può spostare in classActivity per avere meno problemi prob
-                        context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
+                            var historySequence : String? = if(history.size > 0)convertListToString(history) else null
+                            currentSeq = ""
+
+                            //funziona ma si può spostare in classActivity per avere meno problemi prob
+                            context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
+                        }
+                    ){
+                        Text(stringResource(R.string.end_game))
                     }
-                ){
-                    Text(stringResource(R.string.end_game))
-                }
 
-                Button(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(80.dp)
-                        .weight(1f)
-                    ,
-                    onClick = {
-                        currentSeq = ""
+                    Button(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .width(80.dp)
+                            .weight(1f)
+                        ,
+                        onClick = {
+                            currentSeq = ""
+                        }
+                    ){
+                        Text(stringResource(R.string.end_sequence))
                     }
-                ){
-                    Text("Cancella")
                 }
             }
         }
