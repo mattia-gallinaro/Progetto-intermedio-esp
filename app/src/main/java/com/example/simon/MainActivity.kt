@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -21,7 +20,6 @@ import com.example.simon.ui.theme.SimonTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
@@ -121,7 +119,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         val historySequence : String? = if(history.size > 0)convertListToString(history) else null
                         currentSeq = ""
 
-
                         context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
                     }
                 ){
@@ -145,7 +142,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }else{
         Row(modifier = Modifier
             .fillMaxSize()
-            .background(Color.DarkGray)
+            .padding(16.dp)
         ){
             Box(modifier = Modifier
                 .weight(1f)
@@ -167,7 +164,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     fontSize = 30.sp
                 )
 
-                Row() {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                ){
                     Button(
                         modifier = Modifier
                             .height(40.dp)
