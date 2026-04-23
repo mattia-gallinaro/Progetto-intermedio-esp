@@ -61,22 +61,32 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var currentSeq by rememberSaveable { mutableStateOf("") }
     var history by rememberSaveable { mutableStateOf(listOf<String>()) }
 
+    //per avere il context per l'intent
     val context = LocalContext.current
 
+    //funzione lambda per inserire una lettera nella sequenza corrente
     val onColorButtonClick : (String) -> Unit= {color ->
+
         if(currentSeq.compareTo("") == 0) currentSeq = color
         else currentSeq += ", $color"
+
     }
 
+    //funzione lambda per convertire la lista di stringhe in un'unica stringa composta da sequenze separate dal carattere ';'
+    //se la lista non e' vuota senno' ritorna una stringa vuota
     val convertListToString : (historySeq : List<String>) -> String = { historySeq ->
+
         var sequenceHistory = ""
+
         if(historySeq.size != 0){
             for(i in 0..(historySeq.size - 2))sequenceHistory = sequenceHistory + historySeq[i] + ";"
             sequenceHistory += historySeq[history.size - 1]
         }
+
         sequenceHistory
     }
 
+    //controllo l'orientamento dello schermo del dispositivo
     if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT){
         Column(
             modifier = modifier
@@ -114,11 +124,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     ,
                     onClick = {
 
+                        //aggiungo una sequenza alla lista solo se la sequenza corrente non e' vuota
                         if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
-                        val historySequence : String? = if(history.size > 0)convertListToString(history) else null
+                        val historySequence = convertListToString(history)
                         currentSeq = ""
 
+                        //intent per far startare l'attivita' successiva
                         context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
                     }
                 ){
@@ -140,6 +152,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
     }else{
+        //configurazione per orientamento landscape
         Row(modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
@@ -174,12 +187,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             .weight(1f)
                         ,
                         onClick = {
-
                             if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
-                            val historySequence : String? = if(history.size > 0)convertListToString(history) else null
+                            val historySequence = convertListToString(history)
                             currentSeq = ""
 
+                            //intent per far startare l'attivita' successiva
                             context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
                         }
                     ){
@@ -217,8 +230,9 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
         ColorButton(Color.Green, "G"),
         ColorButton(Color.Cyan, "C"),
         ColorButton(Color.Yellow, "Y"),
-        ColorButton(Color.Magenta, "M")).shuffled()
-
+        ColorButton(Color.Magenta, "M")).shuffled()// in modo che i colori dei bottoni vengano mescolati
+                                                          // ad ogni chiamata di button grid
+                                                          // e non rimangano nella stessa posizione
 
         Column(modifier = Modifier
             .fillMaxSize()
@@ -232,11 +246,22 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
                 ) {
                     repeat(2) { col ->
 
-                        val index = row * 2 + col
+                        val index = row * 2 + col //piuttosto di usare una variabile i, l'indice viene calcolato ad ogni iterazione sfruttando il numero della row e il numero della colonna
+                                                  // in modo da seguire la seguente logica
+                                                  /* index            row               col
+                                                  *   0                0                 0
+                                                  *   1                0                 1
+                                                  *   2                1                 0
+                                                  *   3                1                 1
+                                                  *   4                2                 0
+                                                  *   5                2                 1
+                                                  *   in questo modo gli indici possono essere ricalcolati ad ogni chiamata della funzione senza incombere in errori di IndexOutOfBoundsException
+                                                  *   come avveniva precedentemente con l'uso di una variabile i la quale non veniva reinizializzata ad ogni chiamata della funzione
+                                                  * */
 
                         Button(
                             modifier = Modifier
-                                .weight(1f)//in modo che i bottoni possano occupare metà riga
+                                .weight(1f)//in modo che i bottoni possano occupare metà riga ciascuno
                                 .fillMaxHeight()
                                 .padding(10.dp),
                             onClick = { onColorButtonClick(colorList[index].name) },

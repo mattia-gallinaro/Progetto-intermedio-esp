@@ -31,7 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 
 
-val convertSequenceToList : (seq : String) -> List<String> = { seq ->
+//funzione lambda usata per dividere la singola sequenza in una lista di singole
+//lettere che indicano il colore
+private val convertSequenceToList : (seq : String) -> List<String> = { seq ->
     val seqPolished = seq.replace(" ", "")
     seqPolished.split(",")
 }
@@ -78,6 +80,8 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
                 .height(6.dp)
         )
 
+        //controllo se ho passato delle sequenze o meno
+        //
         if(history[0] != ""){
             LazyColumn() {
                 items(history.size){
