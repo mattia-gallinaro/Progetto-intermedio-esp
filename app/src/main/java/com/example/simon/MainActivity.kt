@@ -5,6 +5,7 @@ import androidx.compose.runtime.setValue
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -38,6 +39,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
 
+private val tag = listOf("ButtonClick", "Activity", "Intent", "IndexGrid")
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +60,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
 
+    Log.d(tag[1], "MainScreen has been called")
+
     //per salvare e gestire la sequenza attuale e quella dello storico
     var currentSeq by rememberSaveable { mutableStateOf("") }
     var history by rememberSaveable { mutableStateOf(listOf<String>()) }
+
+    //per verificare che il contenuto delle variabili rimanga salvato anche dopo
+    // cambio attività o cambio orientamento dello schermo
+    Log.d(tag[1], "currentSeq value : $currentSeq")
+    Log.d(tag[1], "history value : $history")
 
     //per avere il context per l'intent
     val context = LocalContext.current
@@ -67,9 +77,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
     //funzione lambda per inserire una lettera nella sequenza corrente
     val onColorButtonClick : (String) -> Unit= {color ->
 
+        Log.d(tag[0], "Button $color clicked")
+
         if(currentSeq.compareTo("") == 0) currentSeq = color
         else currentSeq += ", $color"
 
+        Log.d(tag[0], "Sequence after button clicked $currentSeq")
     }
 
     //funzione lambda per convertire la lista di stringhe in un'unica stringa composta da sequenze separate dal carattere ';'
@@ -96,7 +109,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
             Box(modifier = Modifier
                 .fillMaxWidth()
-                .weight(2f)// in modo che la griglia dei bottoni occupi 2/4 dello schermo in proporzione al resto
+                .weight(2f)// in modo che la griglia dei bottoni occupi 2/4 dello schermo in proporzione al text e la row che contiene i bottoni
             ){
                 ButtonGrid(onColorButtonClick)
             }
@@ -123,6 +136,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         .weight(1f)
                     ,
                     onClick = {
+
+                        
 
                         //aggiungo una sequenza alla lista solo se la sequenza corrente non e' vuota
                         if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
@@ -173,20 +188,26 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState())
+                        .weight(1f),
                     fontSize = 30.sp
                 )
 
                 Row(modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1.5f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+
                 ){
                     Button(
                         modifier = Modifier
                             .height(40.dp)
-                            .width(80.dp)
+                            .width(40.dp)
                             .weight(1f)
                         ,
                         onClick = {
+                            Log.d(tag[0], "")
                             if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
                             val historySequence = convertListToString(history)
@@ -194,6 +215,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
                             //intent per far startare l'attivita' successiva
                             context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
+
                         }
                     ){
                         Text(stringResource(R.string.end_game))
@@ -202,7 +224,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     Button(
                         modifier = Modifier
                             .height(40.dp)
-                            .width(80.dp)
+                            .width(40.dp)
                             .weight(1f)
                         ,
                         onClick = {
@@ -225,7 +247,9 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
 
     //Lista di coppie di colore + prima lettera del colore
 
-    val colorList = listOf<ColorButton>(ColorButton(Color.Red, "R"),
+    Log.d(tag[1], "Creation of ButtonGrid")
+
+    val colorList = listOf(ColorButton(Color.Red, "R"),
         ColorButton(Color.Blue, "B"),
         ColorButton(Color.Green, "G"),
         ColorButton(Color.Cyan, "C"),
@@ -234,7 +258,7 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
                                                           // ad ogni chiamata di button grid
                                                           // e non rimangano nella stessa posizione
 
-        Column(modifier = Modifier
+    Column(modifier = Modifier
             .fillMaxSize()
         ) {
             repeat(3) { row ->
@@ -256,8 +280,10 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
                                                   *   4                2                 0
                                                   *   5                2                 1
                                                   *   in questo modo gli indici possono essere ricalcolati ad ogni chiamata della funzione senza incombere in errori di IndexOutOfBoundsException
-                                                  *   come avveniva precedentemente con l'uso di una variabile i la quale non veniva reinizializzata ad ogni chiamata della funzione
+                                                  *   come avveniva precedentemente con l'uso di una variabile i la quale non veniva reinizializzata ad ogni chiamata della funzione ButtonGrid
                                                   * */
+
+                        Log.d(tag[3], "Index value is : $index")
 
                         Button(
                             modifier = Modifier
@@ -274,7 +300,8 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
             }
         }
 
-    }
+    Log.d(tag[1], "ButtonGrid created ")
+}
 
 
 @Preview(showBackground = true)
