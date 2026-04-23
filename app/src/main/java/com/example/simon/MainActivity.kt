@@ -39,7 +39,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
 
-private val tag = listOf("ButtonClick", "Activity", "Intent", "IndexGrid")
+private val tag = listOf("ButtonClick", "Activity", "Value", "IndexGrid")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,13 +137,17 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     ,
                     onClick = {
 
-                        
+                        Log.d(tag[0], "End game clicked")
 
                         //aggiungo una sequenza alla lista solo se la sequenza corrente non e' vuota
                         if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
 
+                        Log.d(tag[2], "New list of sequences : $history")
+
                         val historySequence = convertListToString(history)
                         currentSeq = ""
+
+                        Log.d(tag[2],"String ready to be sent for other activity : $historySequence")
 
                         //intent per far startare l'attivita' successiva
                         context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
@@ -159,7 +163,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         .weight(1f)
                     ,
                     onClick = {
+                        Log.d(tag[0], "End game clicked")
+
                         currentSeq = ""
+
+                        Log.d(tag[2], "Value of currentSeq: $currentSeq")
                     }
                 ){
                     Text(stringResource(R.string.end_sequence))
@@ -207,11 +215,17 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             .weight(1f)
                         ,
                         onClick = {
-                            Log.d(tag[0], "")
+                            Log.d(tag[0], "End game clicked")
+
+                            //aggiungo una sequenza alla lista solo se la sequenza corrente non e' vuota
                             if(currentSeq.compareTo("") != 0)history = history.plus(currentSeq)
+
+                            Log.d(tag[2], "New list of sequences : $history")
 
                             val historySequence = convertListToString(history)
                             currentSeq = ""
+
+                            Log.d(tag[2],"String ready to be sent for other activity : $historySequence")
 
                             //intent per far startare l'attivita' successiva
                             context.startActivity(Intent(context, SequenceHistory::class.java).putExtra("History", historySequence))
@@ -228,7 +242,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             .weight(1f)
                         ,
                         onClick = {
+                            Log.d(tag[0], "End game clicked")
+
                             currentSeq = ""
+
+                            Log.d(tag[0], "Value of currentSeq: $currentSeq")
                         }
                     ){
                         Text(stringResource(R.string.end_sequence))
