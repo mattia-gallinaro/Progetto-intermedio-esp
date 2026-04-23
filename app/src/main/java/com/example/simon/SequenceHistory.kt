@@ -22,13 +22,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.layout.Row
 
 
 //funzione lambda usata per dividere la singola sequenza in una lista di singole
@@ -81,11 +84,12 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
         )
 
         //controllo se ho passato delle sequenze o meno
-        //
+        //se non ne ho mostro un messaggio a schermo per indicare che non sono presenti delle sequenze
         if(history[0] != ""){
             LazyColumn() {
+                //scorro la lista di sequenze ricevuta dalla MainActivity tramite intent
                 items(history.size){
-                        i -> SingleSequence(history[i])
+                        i -> SingleSequence(history[i])//creo un oggetto composable per rappresentare singolarmente le sequeunze
                 }
             }
         }else{
@@ -97,6 +101,7 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
                     text = stringResource(R.string.emptyHistory),
                     modifier = Modifier
                         .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
                     fontSize = 30.sp
                 )
             }
@@ -104,12 +109,13 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
     }
 }
 
+//
 @Composable
 fun SingleSequence(sequence : String){
 
     val buttonsSequence = convertSequenceToList(sequence)
 
-    Box(
+    Row(
         modifier = Modifier
         .fillMaxWidth()
         .height(90.dp)
@@ -118,14 +124,24 @@ fun SingleSequence(sequence : String){
             1.dp,
             SolidColor(Color.White),
             shape = RoundedCornerShape(4.dp)
-        )
+        ),
     ){
         Text(
-            text = buttonsSequence.size.toString() + "    " + buttonsSequence.toString().replace("[", "").replace("]",""),
+            text = buttonsSequence.size.toString(),
             fontSize = 30.sp,
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth().weight(2f).padding(vertical = 5.dp),
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            textAlign = TextAlign.Center
+            //anche qua aggiungere la stessa cosa di no sequences have been found
+        )
+        Spacer(modifier = Modifier.padding(horizontal = 10.dp).fillMaxHeight())
+        Text(
+            text = buttonsSequence.toString().replace("[", "").replace("]",""),
+            fontSize = 30.sp,
+            modifier = Modifier.fillMaxWidth().weight(8f).padding(vertical = 5.dp),
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Ellipsis//per sostituire la parte di testo che andrebbe in una seconda riga o al di fuori della box con un
         )
     }
 }
