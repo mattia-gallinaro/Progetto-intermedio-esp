@@ -38,7 +38,7 @@ private val convertSequenceToList : (seq : String) -> List<String> = { seq ->
     val seqPolished = seq.replace(" ", "")
     seqPolished.split(",")
 }
-private const val tag = "History"
+private val tag = listOf("History")
 class SequenceHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -47,7 +47,7 @@ class SequenceHistory : ComponentActivity() {
 
         val seqHistory : String?  = intent.extras?.getString("History")
 
-        Log.d(tag ,"Value received from the intent is : $seqHistory")
+        Log.d(tag[0] ,"Value received from the intent is : $seqHistory")
 
         setContent {
             SimonTheme {

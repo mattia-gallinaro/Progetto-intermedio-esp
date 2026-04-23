@@ -101,6 +101,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     //controllo l'orientamento dello schermo del dispositivo
     if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT){
+
+        Log.d(tag[1], "Layout for portrait orientation")
+
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -165,9 +168,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     onClick = {
                         Log.d(tag[0], "End game clicked")
 
+                        Log.d(tag[2], "Old value of currentSeq: $currentSeq")
+
                         currentSeq = ""
 
-                        Log.d(tag[2], "Value of currentSeq: $currentSeq")
+                        Log.d(tag[2], "New value of currentSeq: $currentSeq")
                     }
                 ){
                     Text(stringResource(R.string.end_sequence))
@@ -175,6 +180,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
     }else{
+
+        Log.d(tag[1], "Layout for portrait orientation")
+
         //configurazione per orientamento landscape
         Row(modifier = Modifier
             .fillMaxSize()
@@ -244,9 +252,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         onClick = {
                             Log.d(tag[0], "End game clicked")
 
+                            Log.d(tag[2], "Old value of currentSeq: $currentSeq")
+
                             currentSeq = ""
 
-                            Log.d(tag[0], "Value of currentSeq: $currentSeq")
+                            Log.d(tag[2], "New value of currentSeq: $currentSeq")
                         }
                     ){
                         Text(stringResource(R.string.end_sequence))
