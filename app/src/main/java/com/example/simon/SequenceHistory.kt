@@ -45,7 +45,9 @@ class SequenceHistory : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val seqHistory : String?  = intent.extras?.getString("History")
+
+        val seqHistory : String?  = intent.extras?.getString("History")//prende il valore che è stato passato tramite intent, nel caso in cui esista
+                                                                             // sennò pone seqHistory a null
 
         Log.d(tag[0] ,"Value received from the intent is : $seqHistory")
 
@@ -77,7 +79,7 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally//in modo che gli oggetti vengano allineati al centro
     ) {
 
         Text(
@@ -119,7 +121,7 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
     }
 }
 
-//
+//Funzione per poter creare una row che contiene la sequenza di bottoni e il numero di bottoni premuti
 @Composable
 fun SingleSequence(sequence : String){
 
@@ -143,9 +145,10 @@ fun SingleSequence(sequence : String){
         ),
     ){
         Text(
-            text = buttonsSequence.size.toString(),
+            text = buttonsSequence.size.toString(),//conta il numero di elementi della lista dato che corrispondono al numero di bottoni premuti e li mostra
             fontSize = 25.sp,
-            modifier = Modifier.fillMaxWidth().weight(3f),
+            modifier = Modifier.fillMaxWidth().weight(3f), //ottiene 3/10 della row affinchè così la maggior parte della row
+                                                                    //sia occupata dalla sequenza di bottoni
             maxLines = 1,
             textAlign = TextAlign.Center
         )
@@ -155,7 +158,8 @@ fun SingleSequence(sequence : String){
 
         //Per rappresentare la lista dei bottoni premuti
         Text(
-            text = buttonsSequence.toString().replace("[", "").replace("]",""),
+            text = buttonsSequence.toString().replace("[", "")
+                .replace("]",""),//rimuove le parentesi dalla rappresentazione di base della lista in stringa e infine viene stampato il testo
             fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth().weight(8f),
             maxLines = 1,

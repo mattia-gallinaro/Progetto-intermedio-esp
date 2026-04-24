@@ -184,7 +184,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         .weight(1f)
                     ,
                     onClick = {
-                        Log.d(tag[0], "End game clicked")
+                        Log.d(tag[0], "Cancel button clicked")
 
                         Log.d(tag[2], "Old value of currentSeq: $currentSeq")
 
@@ -278,7 +278,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             .weight(1f)
                         ,
                         onClick = {
-                            Log.d(tag[0], "End game clicked")
+                            Log.d(tag[0], "Cancel button clicked")
 
                             Log.d(tag[2], "Old value of currentSeq: $currentSeq")
 
@@ -295,9 +295,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }
 }
 
-//per definire una classe che genera in automatico getter e setter e mi permette di avere
+//per definire una classe che genera in automatico getter e setter
+//Le properties servono per rappresentare il colore per i bottoni e l'iniziale del nome del colore in inglese
+// esempio (Color.Gray <- il colore , "G" <- l'iniziale del nome del colore in questo caso è Gray il colore)
 data class ColorButton(val color : Color, val name : String)
-
 
 //Griglia dei 6 bottoni 3x2
 @Composable
