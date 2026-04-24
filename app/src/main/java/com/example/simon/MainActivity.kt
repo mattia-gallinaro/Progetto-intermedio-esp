@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.simon.ui.theme.SimonTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,7 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.sp
 
-private val tag = listOf("ButtonClick", "Activity", "Value", "IndexGrid")
+private val tag = listOf("ButtonClick", "Activity", "Value")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,9 +70,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var history by rememberSaveable { mutableStateOf(listOf<String>()) }
 
     //per verificare che il contenuto delle variabili rimanga salvato anche dopo
-    // cambio attività o cambio orientamento dello schermo
-    Log.d(tag[1], "currentSeq value : $currentSeq")
-    Log.d(tag[1], "history value : $history")
+    //cambio attività o cambio orientamento dello schermo
+    Log.d(tag[2], "currentSeq value : $currentSeq")
+    Log.d(tag[2], "history value : $history")
 
     //per avere il context per l'intent
     val context = LocalContext.current
@@ -86,7 +85,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         if(currentSeq.compareTo("") == 0) currentSeq = color
         else currentSeq += ", $color"
 
-        Log.d(tag[0], "Sequence after button clicked $currentSeq")
+        Log.d(tag[2], "Sequence after button clicked $currentSeq")
     }
 
     //funzione lambda per convertire la lista di stringhe in un'unica stringa composta da sequenze separate dal carattere ';'
@@ -95,10 +94,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
         var sequenceHistory = ""
 
-        if(historySeq.size != 0){
+        if(historySeq.isNotEmpty()){
             for(i in 0..(historySeq.size - 2))sequenceHistory = sequenceHistory + historySeq[i] + ";"
             sequenceHistory += historySeq[history.size - 1]
         }
+
+        Log.d(tag[2], "List of sequences in one string : $sequenceHistory")
 
         sequenceHistory
     }
@@ -217,6 +218,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
                 Box(modifier = Modifier
                     .weight(1f)
+                    .padding(10.dp)
                     .border(
                         1.dp,
                         if(isSystemInDarkTheme())SolidColor(Color.White)
@@ -296,6 +298,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
 //per definire una classe che genera in automatico getter e setter e mi permette di avere
 data class ColorButton(val color : Color, val name : String)
 
+
+//Griglia dei 6 bottoni 3x2
 @Composable
 fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
 
@@ -337,7 +341,7 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
                                                   *   come avveniva precedentemente con l'uso di una variabile i la quale non veniva reinizializzata ad ogni chiamata della funzione ButtonGrid
                                                   * */
 
-                        Log.d(tag[3], "Index value is : $index")
+                        Log.d(tag[2], "Index value is : $index")
 
                         Button(
                             modifier = Modifier
@@ -355,13 +359,4 @@ fun ButtonGrid(onColorButtonClick : (String) -> Unit) {
         }
 
     Log.d(tag[1], "ButtonGrid created ")
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SimonTheme {
-        MainScreen()
-    }
 }

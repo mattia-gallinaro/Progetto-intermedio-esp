@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.simon.ui.theme.SimonTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,7 +38,7 @@ private val convertSequenceToList : (seq : String) -> List<String> = { seq ->
     val seqPolished = seq.replace(" ", "")
     seqPolished.split(",")
 }
-private val tag = listOf("History")
+private val tag = listOf("Activity", "Value")
 class SequenceHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -66,7 +65,13 @@ class SequenceHistory : ComponentActivity() {
 @Composable
 fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
 
+    Log.d(tag[0], "ShowHistory called")
+
+    Log.d(tag[1], "Value received from main for sequences : $sequences")
+
     val history = sequences.split(";")
+
+    Log.d(tag[1], "List of sequences splitted : $history")
 
     Column(
         modifier = modifier
@@ -74,6 +79,7 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
             .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Text(
             text = stringResource(R.string.history),
             fontSize = 30.sp
@@ -88,7 +94,8 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
         //controllo se ho passato delle sequenze o meno
         //se non ne ho mostro un messaggio a schermo per indicare che non sono presenti delle sequenze
         if(history[0] != ""){
-            LazyColumn() {
+            //se ho degli elementi invece sfrutto una lazy column dato che crea e mostra gli oggetti correntemente visibili
+            LazyColumn{
                 //scorro la lista di sequenze ricevuta dalla MainActivity tramite intent
                 items(history.size){
                         i -> SingleSequence(history[i])//creo un oggetto composable per rappresentare singolarmente le sequeunze
@@ -97,13 +104,14 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
         }else{
             Column(modifier = Modifier
                 .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                verticalArrangement = Arrangement.Center,           // per poter porre il testo
+                horizontalAlignment = Alignment.CenterHorizontally) // al centro dello schermo
+            {
                 Text(
                     text = stringResource(R.string.emptyHistory),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center,// fa in modo che il testo venga scritto al centro
                     fontSize = 25.sp
                 )
             }
@@ -115,7 +123,13 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
 @Composable
 fun SingleSequence(sequence : String){
 
+    Log.d(tag[0], "Creating a new row for a sequence")
+
+    Log.d(tag[1], "Sequence not splitted : $sequence")
+
     val buttonsSequence = convertSequenceToList(sequence)
+
+    Log.d(tag[1], "Sequnence splitted : $buttonsSequence")
 
     Row(
         modifier = Modifier
@@ -131,7 +145,7 @@ fun SingleSequence(sequence : String){
         Text(
             text = buttonsSequence.size.toString(),
             fontSize = 25.sp,
-            modifier = Modifier.fillMaxWidth().weight(2f),
+            modifier = Modifier.fillMaxWidth().weight(3f),
             maxLines = 1,
             textAlign = TextAlign.Center
         )
@@ -139,23 +153,19 @@ fun SingleSequence(sequence : String){
         //Per dividere i 2 testi
         Spacer(modifier = Modifier.padding(horizontal = 10.dp).fillMaxHeight())
 
-        //Ra
+        //Per rappresentare la lista dei bottoni premuti
         Text(
             text = buttonsSequence.toString().replace("[", "").replace("]",""),
             fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth().weight(8f),
             maxLines = 1,
             textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis//per sostituire la parte di testo che andrebbe in una seconda riga o al di fuori della box con un
+            overflow = TextOverflow.Ellipsis//per sostituire la parte di testo che andrebbe in una seconda
+                                            // riga o al di fuori della box con dei puntini
         )
     }
+
+    Log.d(tag[0], "New row for a sequence has been created")
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview2() {
-    SimonTheme {
-        ShowHistory(sequences = "")
-    }
-}
 
