@@ -9,6 +9,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -35,8 +37,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.sp
 
 private val tag = listOf("ButtonClick", "Activity", "Value", "IndexGrid")
@@ -117,15 +121,28 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 ButtonGrid(onColorButtonClick)
             }
 
-            Text(
-                text = currentSeq,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState()),
-                fontSize = 30.sp
-            )
+            Box(modifier = Modifier
+                .weight(1f)
+                .padding(10.dp)
+                .border(
+                    1.dp,
+                    if(isSystemInDarkTheme())SolidColor(Color.White)
+                    else SolidColor(Color.Black),//isSystemDarkTheme serve per controllare se il dispositivo
+                                                        //ha attivato la modalità notte o meno . In base a quello modifica
+                                                        //la linea per delimitare il testo
+                    shape = RoundedCornerShape(4.dp)
+                )
+            ){
+                Text(
+                    text = currentSeq,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .padding(5.dp)
+                        .verticalScroll(rememberScrollState()),
+                    fontSize = 20.sp
+                )
+            }
 
             Row(modifier = Modifier
                 .fillMaxWidth()
@@ -183,8 +200,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
         Log.d(tag[1], "Layout for portrait orientation")
 
-        //configurazione per orientamento landscape
-        Row(modifier = Modifier
+        Row(modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
         ){
@@ -199,15 +215,25 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 .fillMaxHeight()
             ) {
 
-                Text(
-                    text = currentSeq,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .verticalScroll(rememberScrollState())
-                        .weight(1f),
-                    fontSize = 30.sp
-                )
+                Box(modifier = Modifier
+                    .weight(1f)
+                    .border(
+                        1.dp,
+                        if(isSystemInDarkTheme())SolidColor(Color.White)
+                        else SolidColor(Color.Black),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                ){
+                    Text(
+                        text = currentSeq,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(5.dp)
+                            .verticalScroll(rememberScrollState()),
+                        fontSize = 20.sp
+                    )
+                }
 
                 Row(modifier = Modifier
                     .fillMaxWidth()

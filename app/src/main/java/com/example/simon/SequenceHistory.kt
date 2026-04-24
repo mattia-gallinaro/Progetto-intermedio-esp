@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Row
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 
 //funzione lambda usata per dividere la singola sequenza in una lista di singole
 //lettere che indicano il colore
@@ -68,13 +69,14 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
     val history = sequences.split(";")
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.history)
+            text = stringResource(R.string.history),
+            fontSize = 30.sp
         )
 
         Spacer(
@@ -102,7 +104,7 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    fontSize = 30.sp
+                    fontSize = 25.sp
                 )
             }
         }
@@ -122,13 +124,13 @@ fun SingleSequence(sequence : String){
         .padding(8.dp)
         .border(
             1.dp,
-            SolidColor(Color.White),
+            if(isSystemInDarkTheme())SolidColor(Color.White) else SolidColor(Color.Black),
             shape = RoundedCornerShape(4.dp)
         ),
     ){
         Text(
             text = buttonsSequence.size.toString(),
-            fontSize = 30.sp,
+            fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth().weight(2f),
             maxLines = 1,
             textAlign = TextAlign.Center
@@ -140,7 +142,7 @@ fun SingleSequence(sequence : String){
         //Ra
         Text(
             text = buttonsSequence.toString().replace("[", "").replace("]",""),
-            fontSize = 30.sp,
+            fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth().weight(8f),
             maxLines = 1,
             textAlign = TextAlign.Center,
