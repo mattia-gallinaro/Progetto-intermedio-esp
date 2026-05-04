@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Simon">
         <activity
+            android:name=".GameDetail"
+            android:exported="false"
+            android:label="@string/title_activity_game_detail"
+            android:theme="@style/Theme.Simon" />
+        <activity
             android:name=".SequenceHistory"
             android:exported="false"
             android:label="@string/title_activity_sequence_history"

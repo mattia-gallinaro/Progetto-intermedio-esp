@@ -5,4 +5,6 @@
     <string name="end_sequence">Cancel</string>
     <string name="history">List of sequences</string>
     <string name="emptyHistory">No sequences have been found</string>
+    <string name="title_activity_game_detail">GameDetail</string>
+    <string name="sequence_correct_buttons">Sequence of buttons pressed correctly in the last round:</string>
 </resources>

@@ -5,4 +5,5 @@
     <string name="end_sequence">Cancella</string>
     <string name="history">Lista delle sequenze</string>
     <string name="emptyHistory">Nessuna sequenza è stata trovata</string>
+    <string name="sequence_correct_buttons">Sequenza di bottoni premuti correttamente nell'ultimo round:</string>
 </resources>
