@@ -25,12 +25,18 @@ import androidx.compose.ui.unit.sp
 class GameDetail : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val correctButtons : String? = intent.extras?.getString("correctSequence")
+        val incorrectButtons : String? = intent.extras?.getString("incorrectSequence")
+
         enableEdgeToEdge()
         setContent {
             SimonTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ShowDetails(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        correctButtons ?: "",
+                        incorrectButtons ?: ""
                     )
                 }
             }
@@ -39,7 +45,7 @@ class GameDetail : ComponentActivity() {
 }
 
 @Composable
-fun ShowDetails(modifier: Modifier = Modifier , correctButtons: List<String>? = null, incorrectButtons: List<String>? = null) {
+fun ShowDetails(modifier: Modifier = Modifier , correctButtons: String, incorrectButtons: String) {
 
     val list = listOf<String>()
 
@@ -52,7 +58,7 @@ Text( modifier = Modifier.weight(2f), text = "List of buttons pressed correctly 
 
 Box(modifier = Modifier.
 weight(8f)){
-    PartOfUi( correctButtons , incorrectButtons)//in seguito verranno passate le stringhe ottenute o tramite room/sql db
+    PartOfUi( listOf(correctButtons) , listOf(incorrectButtons))//in seguito verranno passate le stringhe ottenute o tramite room/sql db
                                                                     //opppure ottenute tramite intent in modo da non mandare molteplici richieste
 }
 }

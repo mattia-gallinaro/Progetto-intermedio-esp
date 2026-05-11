@@ -31,6 +31,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Row
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import android.content.Intent
 
 //funzione lambda usata per dividere la singola sequenza in una lista di singole
 //lettere che indicano il colore
@@ -125,6 +129,8 @@ fun ShowHistory(modifier: Modifier = Modifier , sequences : String) {
 @Composable
 fun SingleSequence(sequence : String){
 
+    val context = LocalContext.current
+
     Log.d(tag[0], "Creating a new row for a sequence")
 
     Log.d(tag[1], "Sequence not splitted : $sequence")
@@ -136,6 +142,12 @@ fun SingleSequence(sequence : String){
     Row(
         modifier = Modifier
         .fillMaxWidth()
+        .clickable(onClick = {
+
+            //ora devo solo splittare da bottoni corretti e quelli incorretti
+
+            context.startActivity(Intent(context, GameDetail::class.java).putExtra("correctSequence" , "").putExtra("incorrectSequence", ""))
+        })
         .height(90.dp)
         .padding(8.dp)
         .border(
